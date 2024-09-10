@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import Sidebar from "@/components/sidebar/Sidebar";
+import Topvar from "@/components/topvar/Topvar";
+import ChatBox from "@/components/chat-box/ChatBox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -24,7 +27,22 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="w-screen h-screen flex">
+            <Sidebar />
+            <div className="h-screen w-full flex-1">
+              <div className='bg-secondary h-screen w-full p-4 flex-1 flex flex-col'>
+                <div>
+                  <Topvar />
+                </div>
+                <div className='flex-1 m-6'>
+                  {children}
+                </div>
+                <div className=''>
+                  <ChatBox />
+                </div>
+              </div>
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

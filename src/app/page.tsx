@@ -1,11 +1,13 @@
-import ChatInterface from '@/components/chat-interface.tsx'
+import ChatBox from '@/components/chat-box/ChatBox'
+import Topvar from '@/components/topvar/Topvar'
 import React from 'react'
 
 type Props = {}
 
 const HomePage = (props: Props) => {
   return (
-    <section></section>
+    <section className=''>
+    </section>
   )
 }
 
