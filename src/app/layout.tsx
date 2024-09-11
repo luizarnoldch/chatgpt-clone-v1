@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Sidebar from "@/components/sidebar/Sidebar";
-import Topvar from "@/components/topvar/Topvar";
-import ChatBox from "@/components/chat-box/ChatBox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,17 +28,7 @@ export default function RootLayout({
           <div className="w-screen h-screen flex">
             <Sidebar />
             <div className="h-screen w-full flex-1">
-              <div className='bg-secondary h-screen w-full p-4 flex-1 flex flex-col'>
-                <div>
-                  <Topvar />
-                </div>
-                <div className='flex-1 m-6'>
-                  {children}
-                </div>
-                <div className=''>
-                  <ChatBox />
-                </div>
-              </div>
+              {children}
             </div>
           </div>
         </ThemeProvider>

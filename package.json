@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "psql-up": "docker-compose -f templates/docker/psql.yml up -d",
+    "psql-stop": "docker-compose -f templates/docker/psql.yml stop",
+    "psql-start": "docker-compose -f templates/docker/psql.yml start"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.1",
@@ -17,6 +20,7 @@
     "@types/uuid": "^10.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "immer": "^10.1.1",
     "lucide-react": "^0.439.0",
     "next": "14.2.7",
     "next-themes": "^0.3.0",

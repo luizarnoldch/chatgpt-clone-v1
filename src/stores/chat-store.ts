@@ -1,53 +1,61 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-interface Message {
-  user: 'Person' | 'System';
+type Message = {
+  user: string;
   message: string;
-}
+};
 
-interface Chat {
+type Chat = {
   id: string;
   messages: Message[];
-}
+};
 
-interface ChatStore {
-  chats: Chat[];
-  addUserMessage: (message: string, chatId: string) => void;
-  addSystemMessage: (message: string, chatId: string) => void;
-  createChat: (id: string) => void;
+type ChatStore = {
+  chats: Record<string, Chat>;
   getChatById: (id: string) => Chat | undefined;
-}
+  createChat: (id: string) => void;
+  setChats: (chats: Record<string, Chat>) => void;
+  addUserMessage: (message: string, id: string) => void;
+  addSystemMessage: (message: string, id: string) => void;
+};
 
-export const useChatStore = create<ChatStore>((set, get) => ({
-  chats: [],
+export const useChatStore = create<ChatStore>()(
+  immer((set, get) => ({
+    chats: {},
 
-  createChat: (id: string) => {
-    set((state) => ({
-      chats: [...state.chats, { id, messages: [] }],
-    }));
-  },
+    getChatById: (id: string) => get().chats[id],
 
-  addUserMessage: (message: string, chatId: string) => {
-    set((state) => ({
-      chats: state.chats.map((chat) =>
-        chat.id === chatId
-          ? { ...chat, messages: [...chat.messages, { user: 'Person', message }] }
-          : chat
-      ),
-    }));
-  },
+    createChat: (id: string) => {
+      set((state) => {
+        if (!state.chats[id]) {
+          state.chats[id] = { id, messages: [] };
+        }
+      });
+    },
 
-  addSystemMessage: (message: string, chatId: string) => {
-    set((state) => ({
-      chats: state.chats.map((chat) =>
-        chat.id === chatId
-          ? { ...chat, messages: [...chat.messages, { user: 'System', message }] }
-          : chat
-      ),
-    }));
-  },
+    setChats: (chats: Record<string, Chat>) => { // Implement setChats
+      set((state) => {
+        state.chats = chats;
+      });
+    },
 
-  getChatById: (id: string) => {
-    return get().chats.find((chat) => chat.id === id);
-  },
-}));
+    addUserMessage: (message: string, id: string) => {
+      set((state) => {
+        const chat = state.chats[id];
+        if (chat) {
+          chat.messages.push({ user: "Person", message });
+        }
+      });
+    },
+
+    addSystemMessage: (message: string, id: string) => {
+      set((state) => {
+        const chat = state.chats[id];
+        if (chat) {
+          chat.messages.push({ user: "Robot", message });
+        }
+      });
+    },
+  }))
+);
