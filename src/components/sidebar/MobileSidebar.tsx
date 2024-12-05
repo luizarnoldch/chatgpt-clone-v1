@@ -1,5 +1,3 @@
-"use client"
-
 // Lib
 import Link from "next/link"
 
@@ -21,36 +19,34 @@ import {
 
 // Stores
 import { useSidebarStore } from "@/stores/sidebar-store"
-import { useActionStore } from "@/stores/create-new-chat"
 
 // Icons
-import ChatGPTIcon from "../assets/icons/ChatGPTIcon"
+import ChatGPTIcon from "../assets/ChatGPTIcon"
 import { SquarePenIcon } from "lucide-react"
 
 
 type MobileSidebarProps = {}
 
 const MobileSidebar: React.FC<MobileSidebarProps> = ({ }) => {
-  const { isMobileSidebarOpen, closeMobileSidebar } = useSidebarStore((state) => ({
-    isMobileSidebarOpen: state.isMobileSidebarOpen,
-    closeMobileSidebar: state.closeMobileSidebar,
-  }))
+  // const { isMobileSidebarOpen, closeMobileSidebar } = useSidebarStore((state) => ({
+  //   isMobileSidebarOpen: state.isMobileSidebarOpen,
+  //   closeMobileSidebar: state.closeMobileSidebar,
+  // }))
 
-  const { sayHello } = useActionStore((state) => ({
-    sayHello: state.sayHello
-  }))
 
   return (
-    <Sheet open={isMobileSidebarOpen} onOpenChange={closeMobileSidebar}>
+    <Sheet 
+    // open={isMobileSidebarOpen} onOpenChange={closeMobileSidebar}
+    >
       <SheetContent side='left'>
         <div className="grid gap-4 py-4 group/item">
-          <Button className="w-full relative">
+          <Button className="w-full relative" asChild>
             <Link href="/" className="w-full flex justify-start items-center gap-2">
               <ChatGPTIcon className="size-6 fill-primary-foreground" />
               <p>ChatGPT</p>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <SquarePenIcon className="absolute right-4 size-4 hidden group-hover/item:block" />
                   </TooltipTrigger>
                   <TooltipContent>

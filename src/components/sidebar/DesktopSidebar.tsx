@@ -1,105 +1,36 @@
 "use client"
 
-// Lib
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import React from 'react'
 
 // Components
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+import ToggleBar from './ToggleBar'
 
-// Stores
-import { useSidebarStore } from "@/stores/sidebar-store"
-// Stores
-import { useActionStore } from "@/stores/create-new-chat"
+// Hooks
+import { useSidebarStore } from "@/stores/sidebar-store";
+import { cn } from '@/lib/utils';
 
-// Icons
-import { MenuIcon, SquarePenIcon } from "lucide-react";
+type Props = {
+  children?: React.ReactNode
+}
 
-import ChatGPTIcon from "../assets/icons/ChatGPTIcon";
-import ChatList from "../chat-list/ChatList";
-
-
-type DesktopSidebarProps = {}
-
-const DesktopSidebar: React.FC<DesktopSidebarProps> = () => {
-  const { isDesktopSidebarOpen, closeDesktopSidebar } = useSidebarStore((state) => ({
-    isDesktopSidebarOpen: state.isDesktopSidebarOpen,
-    closeDesktopSidebar: state.closeDesktopSidebar,
-  }))
-
-  const { sayHello } = useActionStore((state) => ({
-    sayHello: state.sayHello
-  }))
+const DesktopSidebar = ({ children }: Props) => {
+  const isDesktopSidebarOpen = useSidebarStore((state) => state.isDesktopSidebarOpen);
 
   return (
     <div
       className={cn(
-        "h-full transition-[width] duration-500 ease-in-out overflow-hidden",
-        isDesktopSidebarOpen ? "w-[250px]" : "w-0"
+        isDesktopSidebarOpen ? "block" : "hidden",
+        "w-full h-full"
       )}
     >
-      <div className={cn("p-4 ", !isDesktopSidebarOpen && 'opacity-0 pointer-events-none')}>
-        <div className="flex items-center justify-between w-full mb-4">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={closeDesktopSidebar}>
-                  <MenuIcon className="h-6 w-6 cursor-pointer" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Close the Sidebar</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={sayHello}
-                >
-                  <SquarePenIcon className="h-6 w-6 cursor-pointer" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>New Chat</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+      <div className="hidden md:flex flex-col h-full w-64 px-3">
+        <ToggleBar />
+        <div className="flex-1 overflow-hidden">
+          {children}
         </div>
-
-        <div className="grid gap-4 py-4 group/item">
-          <Button className="w-full relative">
-            <Link href="/" className="w-full flex justify-start items-center gap-2">
-              <ChatGPTIcon className="size-6 fill-primary-foreground" />
-              <p>ChatGPT</p>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SquarePenIcon className="absolute right-4 size-4 hidden group-hover/item:block" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>New Chat</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </Link>
-          </Button>
-        </div>
-
-        <ChatList />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DesktopSidebar
+export default DesktopSidebar;

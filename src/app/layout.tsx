@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
-import Sidebar from "@/components/sidebar/Sidebar";
+import { ThemeProvider } from "@/context/ThemeProvider";
+import Sidebar from "@/components/Sidebar";
+import Topbar from "@/components/Topbar";
+import ChatInput from "@/components/ChatInput";
 
-const inter = Inter({ subsets: ["latin"] });
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -27,8 +40,16 @@ export default function RootLayout({
         >
           <div className="w-screen h-screen flex">
             <Sidebar />
-            <div className="h-screen w-full flex-1">
-              {children}
+            <div className="min-h-screen w-full flex-1">
+              <div className='h-full w-full flex flex-col px-3'>
+                <Topbar />
+                <div className="h-full w-full flex flex-col py-2 pb-8">
+                  <div className="flex-1">
+                    {children}
+                  </div>
+                  <ChatInput />
+                </div>
+              </div>
             </div>
           </div>
         </ThemeProvider>

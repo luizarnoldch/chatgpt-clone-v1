@@ -3,33 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "psql-up": "docker-compose -f templates/docker/psql.yml up -d",
-    "psql-stop": "docker-compose -f templates/docker/psql.yml stop",
-    "psql-start": "docker-compose -f templates/docker/psql.yml start"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.1",
-    "@radix-ui/react-label": "^2.1.0",
-    "@radix-ui/react-scroll-area": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.1",
     "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-tooltip": "^1.1.2",
-    "@types/uuid": "^10.0.0",
-    "class-variance-authority": "^0.7.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "immer": "^10.1.1",
-    "lucide-react": "^0.439.0",
-    "next": "14.2.7",
-    "next-themes": "^0.3.0",
-    "react": "^18",
-    "react-dom": "^18",
-    "tailwind-merge": "^2.5.2",
+    "lucide-react": "^0.462.0",
+    "next": "15.0.3",
+    "next-themes": "^0.4.3",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-icons": "^5.3.0",
+    "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^10.0.0",
-    "zustand": "^4.5.5"
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "typescript": "^5",
@@ -39,6 +33,6 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.7"
+    "eslint-config-next": "15.0.3"
   }
 }
