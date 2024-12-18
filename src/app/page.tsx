@@ -1,49 +1,52 @@
-"use client";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
+import React from "react";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
-import { useChatStore } from '@/stores/chat-store';
-import Topvar from '@/components/topvar/Topvar';
-import ChatBox from '@/components/chat-box/ChatBox';
+type Datalinks = {
+  name: string;
+  path: string;
+};
 
-const HomePage = () => {
-  const { addUserMessage, createChat } = useChatStore();
-  const router = useRouter();
+const data: Datalinks[] = [
+  {
+    name: "Chats",
+    path: "/chat",
+  },
+  {
+    name: "Assitants",
+    path: "/assistant",
+  },
+];
 
-  const sendMessage = (input: string) => {
-    if (!input.trim()) return;
+type Props = {};
 
-    const uuid = uuidv4();
-    createChat(uuid);
-    addUserMessage(input, uuid);
-
-    // Realizar un fetch POST para registrar el chat en el backend
-    // try {
-    //   await fetch("/api/chats", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ message: input, id: uuid }),
-    //   });
-    // } catch (error) {
-    //   console.error("Error saving chat:", error);
-    // }
-
-    router.push(`/chat/${uuid}`);
-  };
-
+const Home = (props: Props) => {
   return (
-    <section className='bg-secondary h-screen w-full p-4 flex-1 flex flex-col'>
-      <Topvar />
-      <div className='flex-1 m-6' />
-      <ChatBox handleButton={sendMessage} />
-    </section>
+    <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center gap-8">
+        {data.map((item, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <CardTitle>{item.name}</CardTitle>
+              <CardDescription>Go to your {item.name}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild>
+                <Link href={item.path}>{item.name}</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default HomePage;
-
-
-
+export default Home;
