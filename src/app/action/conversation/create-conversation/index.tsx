@@ -1,12 +1,29 @@
 "use server";
 
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-export async function CreateConversation(previousState: any, formData: FormData) {
+const DOMAIN = "http://localhost:3000";
 
+export async function CreateConversation(
+  previousState: any,
+  formData: FormData,
+) {
   const { chatId, prompt } = Object.fromEntries(formData.entries());
 
-  const newChatId = 123
+  if (chatId === "") {
+    const fetchNewName = await fetch(`${DOMAIN}/api/v1/chat/completion`, {
+      method: "POST",
+      body: JSON.stringify({ prompt: prompt.toString() }),
+    });
+    const { response: newName } = await fetchNewName.json();
 
-  redirect(`/chat/${123}`)
+    const newConversation = await prisma.conversation.create({
+      data: {
+        name: newName,
+        userId: 1,
+      },
+    });
+    redirect(`/chat/${newConversation.uuid}`);
+  }
 }

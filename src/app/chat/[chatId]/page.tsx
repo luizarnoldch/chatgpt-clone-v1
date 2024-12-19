@@ -1,4 +1,4 @@
-import ChatCompletion from "@/components/ChatCompletion";
+import ChatCompletionHistorial from "@/components/ChatCompletion/ChatCompletionHistorial";
 import React from "react";
 
 type Params = Promise<{ chatId: string }>;
@@ -9,7 +9,7 @@ type ChatIdPageProps = {
 
 const ChatIdPage = async ({ params }: ChatIdPageProps) => {
   const { chatId } = await params;
-  return <ChatCompletion chatId={chatId} />;
+  return <ChatCompletionHistorial chatId={chatId} />;
 };
 
 export default ChatIdPage;

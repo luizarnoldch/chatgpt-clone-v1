@@ -14,8 +14,23 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  // Relationships
+  conversations Conversation[]
+}
+
+model Conversation {
+  id                    Int                              @id @default(autoincrement())
+  uuid                  String                           @unique @default(uuid())
+  name                  String
+  createdAt             DateTime                         @default(now())
+  updatedAt             DateTime                         @default(now()) @updatedAt
+  // Relationships
+  userId                Int
+  user                  User                             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // conversationQuestions ConversationQuestionCompletion[]
 }

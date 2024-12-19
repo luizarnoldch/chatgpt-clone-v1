@@ -1,14 +1,21 @@
+import { GetAllConversation } from "@/app/action/conversation/get-all-conversation";
 import DesktopSidebarChat from "./DesktopSidebarChat";
+import { Conversation } from "@prisma/client";
 
 type Props = {};
 
-const DesktopSidebarChats = (props: Props) => {
+
+
+const DesktopSidebarChats = async (props: Props) => {
+
+  const conversations: Conversation[] = await GetAllConversation()
+
   return (
     <div className="mt-4 flex flex-col gap-2">
-      {Array.from({ length: 10 }, (_, index) => (
+      {conversations.map((item, index) => (
         <DesktopSidebarChat
-          name={index.toString()}
-          path={`/chat/${index}`}
+          name={item.name}
+          path={`/chat/${item.uuid}`}
           key={index}
         />
       ))}

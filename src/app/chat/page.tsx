@@ -1,10 +1,9 @@
-import ChatCompletion from "@/components/ChatCompletion";
 import React from "react";
 
 type Props = {};
 
 const ChatPage = (props: Props) => {
-  return <ChatCompletion />;
+  return <div>Main</div>;
 };
 
 export default ChatPage;

@@ -1,80 +1,46 @@
 "use client";
 
-import { CreateConversation } from "@/app/action/conversation/create-conversation";
-
+// Components
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { SendIcon } from "lucide-react";
-import React, { useRef, useEffect, useState, useActionState } from "react";
+import { SendIcon, StopCircleIcon } from "lucide-react";
 
-type ChatCompletionBoxProps = {
-  chatId?: string;
-};
+// Custom Hooks
+import useTextareaHeight from "@/hooks/useTextareaHeight";
 
-const ChatCompletionBox = ({ chatId }: ChatCompletionBoxProps) => {
-  const [input, setInput] = useState("");
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+// Helpers
+import { handleEnterKeyDown } from "@/helpers/handleEnterDown";
+import useSubmitCompletion from "@/hooks/useSubmitCompletion";
 
-  const adjustHeight = () => {
-    if (textAreaRef.current) {
-      textAreaRef.current.style.height = "64px";
-      textAreaRef.current.style.height = `${Math.min(
-        textAreaRef.current.scrollHeight,
-        256,
-      )}px`;
-    }
-  };
-
-  const [state, formAction, isPending] = useActionState(
-    CreateConversation,
-    null,
-  );
-
-  useEffect(() => {
-    if (textAreaRef.current) {
-      adjustHeight();
-    }
-  }, [input]);
-
-  useEffect(() => {
-    setInput('');
-  }, [isPending]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      const form = event.currentTarget.form;
-      if (form) {
-        form.requestSubmit();
-      }
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-  };
+const ChatCompletionBox = () => {
+  const { submitCompletion, isLoading, input, handleInputChange, stop } = useSubmitCompletion();
+  const textAreaRef = useTextareaHeight(input);
 
   return (
     <form
       className="mx-auto flex w-full max-w-7xl items-center justify-center gap-2 rounded-lg bg-background p-4"
-      action={formAction}
+      onSubmit={submitCompletion}
     >
       <Textarea
         ref={textAreaRef}
         className="overflow-y h-auto w-full resize-none rounded-md p-4"
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleEnterKeyDown}
         value={input}
-        onChange={handleChange}
+        onChange={handleInputChange}
         rows={1}
         id="prompt"
         name="prompt"
         placeholder="Type a message..."
       />
-      <Input className="hidden" defaultValue={chatId ?? ""} name="chatId" id="chatId" />
-      <Button disabled={input.length < 1}>
-        <SendIcon />
-      </Button>
+      {
+        isLoading ? <Button onClick={stop}>
+          <StopCircleIcon />
+        </Button> : <Button disabled={input.length < 1}>
+          <SendIcon />
+        </Button>
+      }
+
+
     </form>
   );
 };
